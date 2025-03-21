@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, status, HTTPException
-from database import SessionLocal
 from typing import Annotated
 from sqlalchemy.orm import Session
+from ..database import SessionLocal
 from .auth import get_current_user
-from models import Todos
+from ..models import Todos
 
 router = APIRouter(
     prefix='/admin',

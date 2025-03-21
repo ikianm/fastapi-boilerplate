@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, status, HTTPException
-from database import SessionLocal
+from fastapi import APIRouter, Depends, HTTPException
 from typing import Annotated
 from sqlalchemy.orm import Session
-from .auth import get_current_user
-from models import Users
 from pydantic import Field, BaseModel
 from passlib.context import CryptContext
+from ..database import SessionLocal
+from ..models import Users
+from .auth import get_current_user
 
 
 router = APIRouter(
