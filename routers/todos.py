@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Optional
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 from fastapi import APIRouter, Depends, HTTPException, status, Path
@@ -63,10 +63,10 @@ async def update_todo(user: user_dependency, db: db_dependency, todo_request: To
     if not todo_model:
         raise HTTPException(status_code=404, detail='todo not found')
 
-    todo_model.title = todo_request.title
-    todo_model.description = todo_request.description
-    todo_model.priority = todo_request.priority
-    todo_model.complete = todo_request.complete
+    todo_model.title = todo_request.title if todo_request.title is not None else todo_model.title
+    todo_model.description = todo_request.description if todo_request.description is not None else todo_model.description
+    todo_model.priority = todo_request.priority if todo_request.priority is not None else todo_model.priority
+    todo_model.complete = todo_request.complete if todo_request.complete is not None else todo_model.complete
     
     db.add(todo_model)
     db.commit()
