@@ -32,11 +32,10 @@ class ChangePasswordRequest(BaseModel):
 
 @router.get('/current-user')
 async def current_user(user: user_dependency, db: db_dependency):
-    if not user:
+    if user is None:
         raise HTTPException(401, 'authentication failed')
-
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()
-    if not user_model:
+    if user_model is None:
         raise HTTPException(404, 'no user found')
     
     return user_model
@@ -44,11 +43,11 @@ async def current_user(user: user_dependency, db: db_dependency):
 
 @router.patch('/change-password')
 async def change_password(user: user_dependency, db: db_dependency, change_password_request: ChangePasswordRequest):
-    if not user:
+    if user is None:
         raise HTTPException(401, 'authentication failed')
 
     user_model = db.query(Users).filter(Users.id == user.get('id')).first()
-    if not user_model:
+    if user_model is None:
         raise HTTPException(404, 'no user found')
     
     if bcrypt_context.verify(change_password_request.new_password, user_model.hashed_password):
